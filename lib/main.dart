@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'man_hinh_mon_hoc.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -22,8 +24,120 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class TrangChu extends StatelessWidget {
+class TrangChu extends StatefulWidget {
   const TrangChu({super.key});
+
+  @override
+  State<TrangChu> createState() => _TrangChuState();
+}
+
+class _TrangChuState extends State<TrangChu> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Hiện box thông tin khi mở trang chủ
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      hienThiThongTin();
+    });
+  }
+
+  // Hàm hiển thị box thông tin
+
+  void hienThiThongTin() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFFE8E8E8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40),
+          ),
+          contentPadding: const EdgeInsets.all(20),
+          content: SizedBox(
+            width: 600,
+            height: 330,
+            child: Stack(
+              children: [
+                const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'MÔN HỌC: LẬP TRÌNH THIẾT BỊ DI ĐỘNG',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 28),
+                      Text(
+                        'Đề tài: Quản lý học tập của sinh viên',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 28),
+                      Text(
+                        'GVHD: ThS. Nguyễn Xuân Quế',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      Text(
+                        'Sinh viên thực hiện:',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Nguyễn Tăng Duy - 24100201',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Nguyễn Nghị Đức - 24100503',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Nút X ở góc trên bên phải
+                Positioned(
+                  top: -10,
+                  right: -10,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.close, size: 26),
+                    tooltip: 'Đóng',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,35 +246,42 @@ class TrangChu extends StatelessWidget {
               tieuDe: 'Quản lý môn học',
               moTa: 'Xem danh sách các môn đang học',
               mau: Colors.blue,
-              onTap: () => _thongBao(context, 'Quản lý môn học'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ManHinhMonHoc(),
+                  ),
+                );
+              },
             ),
             TheChucNang(
               icon: Icons.calendar_month_outlined,
               tieuDe: 'Thời khóa biểu',
               moTa: 'Theo dõi lịch học trong tuần',
               mau: Colors.deepPurple,
-              onTap: () => _thongBao(context, 'Thời khóa biểu'),
+              onTap: () => _thongBao('Thời khóa biểu'),
             ),
             TheChucNang(
               icon: Icons.assignment_outlined,
               tieuDe: 'Bài tập và nhiệm vụ',
               moTa: 'Theo dõi bài tập cần hoàn thành',
               mau: Colors.orange,
-              onTap: () => _thongBao(context, 'Bài tập và nhiệm vụ'),
+              onTap: () => _thongBao('Bài tập và nhiệm vụ'),
             ),
             TheChucNang(
               icon: Icons.edit_calendar_outlined,
               tieuDe: 'Lịch thi',
               moTa: 'Xem lịch kiểm tra và lịch thi',
               mau: Colors.green,
-              onTap: () => _thongBao(context, 'Lịch thi'),
+              onTap: () => _thongBao('Lịch thi'),
             ),
             TheChucNang(
               icon: Icons.groups_outlined,
               tieuDe: 'Thông tin nhóm',
               moTa: 'Xem thông tin các thành viên',
               mau: Colors.pink,
-              onTap: () => _thongBao(context, 'Thông tin nhóm'),
+              onTap: () => _thongBao('Thông tin nhóm'),
             ),
 
             const SizedBox(height: 20),
@@ -194,14 +315,15 @@ class TrangChu extends StatelessWidget {
         ],
         onDestinationSelected: (index) {
           if (index != 0) {
-            _thongBao(context, index == 1 ? 'Lịch học' : 'Thông tin cá nhân');
+            _thongBao(index == 1 ? 'Lịch học' : 'Thông tin cá nhân');
           }
         },
       ),
     );
   }
 
-  static void _thongBao(BuildContext context, String noiDung) {
+  // Hàm thông báo khi chọn chức năng
+  void _thongBao(String noiDung) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('$noiDung - sẽ được xây dựng ở bước tiếp theo')),
     );
