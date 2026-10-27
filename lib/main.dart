@@ -7,115 +7,288 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Quản lý học tập sinh viên',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3157D5)),
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFF5F7FC),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const TrangChu(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class TrangChu extends StatelessWidget {
+  const TrangChu({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        backgroundColor: const Color(0xFF3157D5),
+        foregroundColor: Colors.white,
+        title: const Text(
+          'Học tập của tôi',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Bạn chưa có thông báo mới')),
+              );
+            },
+            icon: const Icon(Icons.notifications_none),
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('You have pushed the button this many times:'),
+            const Text(
+              'Xin chào, sinh viên! 👋',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF202B46),
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Cùng lên kế hoạch học tập hôm nay nhé.',
+              style: TextStyle(fontSize: 15, color: Colors.black54),
+            ),
+            const SizedBox(height: 22),
+
+            // Khu vực thống kê
+            const Text(
+              'Tổng quan học tập',
+              style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                Expanded(
+                  child: TheThongKe(
+                    tieuDe: 'Môn học',
+                    soLuong: '6',
+                    icon: Icons.menu_book_rounded,
+                    mau: Colors.blue,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TheThongKe(
+                    tieuDe: 'Bài tập',
+                    soLuong: '4',
+                    icon: Icons.assignment_rounded,
+                    mau: Colors.orange,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: TheThongKe(
+                    tieuDe: 'Lịch thi',
+                    soLuong: '2',
+                    icon: Icons.event_available_rounded,
+                    mau: Colors.purple,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TheThongKe(
+                    tieuDe: 'Hoàn thành',
+                    soLuong: '75%',
+                    icon: Icons.check_circle_rounded,
+                    mau: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+
+            // Các chức năng chính
+            const Text(
+              'Chức năng chính',
+              style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+
+            TheChucNang(
+              icon: Icons.book_outlined,
+              tieuDe: 'Quản lý môn học',
+              moTa: 'Xem danh sách các môn đang học',
+              mau: Colors.blue,
+              onTap: () => _thongBao(context, 'Quản lý môn học'),
+            ),
+            TheChucNang(
+              icon: Icons.calendar_month_outlined,
+              tieuDe: 'Thời khóa biểu',
+              moTa: 'Theo dõi lịch học trong tuần',
+              mau: Colors.deepPurple,
+              onTap: () => _thongBao(context, 'Thời khóa biểu'),
+            ),
+            TheChucNang(
+              icon: Icons.assignment_outlined,
+              tieuDe: 'Bài tập và nhiệm vụ',
+              moTa: 'Theo dõi bài tập cần hoàn thành',
+              mau: Colors.orange,
+              onTap: () => _thongBao(context, 'Bài tập và nhiệm vụ'),
+            ),
+            TheChucNang(
+              icon: Icons.edit_calendar_outlined,
+              tieuDe: 'Lịch thi',
+              moTa: 'Xem lịch kiểm tra và lịch thi',
+              mau: Colors.green,
+              onTap: () => _thongBao(context, 'Lịch thi'),
+            ),
+            TheChucNang(
+              icon: Icons.groups_outlined,
+              tieuDe: 'Thông tin nhóm',
+              moTa: 'Xem thông tin các thành viên',
+              mau: Colors.pink,
+              onTap: () => _thongBao(context, 'Thông tin nhóm'),
+            ),
+
+            const SizedBox(height: 20),
+            Center(
+              child: Text(
+                'Ứng dụng hỗ trợ quản lý học tập sinh viên',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 0,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Trang chủ',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'Lịch học',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            label: 'Cá nhân',
+          ),
+        ],
+        onDestinationSelected: (index) {
+          if (index != 0) {
+            _thongBao(context, index == 1 ? 'Lịch học' : 'Thông tin cá nhân');
+          }
+        },
+      ),
+    );
+  }
+
+  static void _thongBao(BuildContext context, String noiDung) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$noiDung - sẽ được xây dựng ở bước tiếp theo')),
+    );
+  }
+}
+
+// Widget hiển thị thông tin thống kê
+class TheThongKe extends StatelessWidget {
+  final String tieuDe;
+  final String soLuong;
+  final IconData icon;
+  final Color mau;
+
+  const TheThongKe({
+    super.key,
+    required this.tieuDe,
+    required this.soLuong,
+    required this.icon,
+    required this.mau,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: mau, size: 30),
+            const SizedBox(height: 12),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              soLuong,
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              tieuDe,
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+}
+
+// Widget hiển thị từng chức năng
+class TheChucNang extends StatelessWidget {
+  final IconData icon;
+  final String tieuDe;
+  final String moTa;
+  final Color mau;
+  final VoidCallback onTap;
+
+  const TheChucNang({
+    super.key,
+    required this.icon,
+    required this.tieuDe,
+    required this.moTa,
+    required this.mau,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: Colors.white,
+      margin: const EdgeInsets.only(bottom: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading: CircleAvatar(
+          backgroundColor: mau.withValues(alpha: 0.12),
+          child: Icon(icon, color: mau),
+        ),
+        title: Text(
+          tieuDe,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(moTa),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: onTap,
       ),
     );
   }
